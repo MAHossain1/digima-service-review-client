@@ -3,12 +3,15 @@ import img from "../../../assests/login/login.svg";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { GoMarkGithub } from "react-icons/go";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../Context/UserContext/UserContext";
 import { toast } from "react-hot-toast";
 
 const Login = () => {
   const { loginUser, googleLogin } = useContext(AuthContext);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from?.pathname || "/";
 
   const handleLogin = event => {
     event.preventDefault();
@@ -22,6 +25,7 @@ const Login = () => {
         const user = result.user;
         toast.success("User Login successfully");
         form.reset();
+        navigate(from, { replace: true });
         console.log(user);
       })
       .catch(e => console.error(e));
@@ -32,6 +36,7 @@ const Login = () => {
       .then(result => {
         const user = result.user;
         toast.success("User Login successfully");
+        navigate(from, { replace: true });
         console.log(user);
       })
       .catch(e => console.error(e));
