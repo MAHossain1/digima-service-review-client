@@ -1,11 +1,41 @@
-import React from "react";
+import React, { useContext } from "react";
+import { toast } from "react-hot-toast";
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { GoMarkGithub } from "react-icons/go";
 import { Link } from "react-router-dom";
 import img from "../../../assests/login/login.svg";
+import { AuthContext } from "../../../Context/UserContext/UserContext";
 
 const SignUp = () => {
+  const { CreateUser, googleLogin } = useContext(AuthContext);
+
+  const handleSignup = event => {
+    event.preventDefault();
+    const form = event.target;
+    const email = form.email.value;
+    const password = form.password.value;
+
+    CreateUser(email, password)
+      .then(result => {
+        const user = result.user;
+        toast.success("User Login successfully");
+        form.reset();
+        console.log(user);
+      })
+      .catch(e => console.error(e));
+  };
+
+  const handleGoogleSign = () => {
+    googleLogin()
+      .then(result => {
+        const user = result.user;
+        toast.success("User Login successfully");
+        console.log(user);
+      })
+      .catch(e => console.error(e));
+  };
+
   return (
     <div className="hero w-full my-20">
       <div className="hero-content grid gap-20 md:grid-cols-2 flex-col lg:flex-row">
@@ -14,7 +44,7 @@ const SignUp = () => {
         </div>
         <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100 py-12">
           <h1 className="text-5xl text-center font-bold">Sign Up</h1>
-          <form className="card-body">
+          <form onSubmit={handleSignup} className="card-body">
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email</span>
@@ -53,7 +83,7 @@ const SignUp = () => {
             <button>
               <FaFacebook className="text-blue-600" />
             </button>
-            <button>
+            <button onClick={handleGoogleSign}>
               <FcGoogle className="ml-4" />
             </button>
             <button className="ml-4">

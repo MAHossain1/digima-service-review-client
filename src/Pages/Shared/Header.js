@@ -1,19 +1,37 @@
-import React from "react";
+import React, { useContext } from "react";
+import { FaUserAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import logo from "../../assests/logo/logo.svg";
+import { AuthContext } from "../../Context/UserContext/UserContext";
 
 const Header = () => {
+  const { user, logOut } = useContext(AuthContext);
+
+  const handleSignOut = () => {
+    logOut();
+  };
+
   const menuItems = (
     <>
       <li className="font-semibold mr-2">
         <Link to="/">Home</Link>
       </li>
-      <li className="font-semibold mr-2">
-        <Link to="/login">Login</Link>
-      </li>
-      <li className="font-semibold mr-2">
-        <Link to="/signup">Sign Up</Link>
-      </li>
+      {user?.email ? (
+        <>
+          <li className="font-semibold mr-2">
+            <button onClick={handleSignOut}>Sign Out</button>
+          </li>
+        </>
+      ) : (
+        <>
+          <li className="font-semibold mr-2">
+            <Link to="/login">Login</Link>
+          </li>
+          <li className="font-semibold mr-2">
+            <Link to="/signup">Sign Up</Link>
+          </li>
+        </>
+      )}
     </>
   );
 
@@ -52,9 +70,21 @@ const Header = () => {
         <ul className="menu menu-horizontal px-1">{menuItems}</ul>
       </div>
       <div className="navbar-end">
-        <a href="/" className="btn btn-outline btn-warning">
-          Get started
-        </a>
+        <label
+          className="btn btn-ghost btn-circle avatar tooltip tooltip-left tooltip-info"
+          data-tip={user?.displayName}
+        >
+          <div className="w-10 rounded-full">
+            {user?.uid ? (
+              <img src={user?.photoURL} alt="" />
+            ) : (
+              <p className="text-3xl pl-2 pt-1">
+                <FaUserAlt />
+              </p>
+            )}
+          </div>
+        </label>
+        <button className="btn btn-outline btn-error">Appointment</button>
       </div>
     </div>
   );
