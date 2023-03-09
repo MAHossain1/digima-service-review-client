@@ -6,7 +6,7 @@ const ServicesFull = () => {
   const [services, setServices] = useState([]);
 
   useEffect(() => {
-    fetch("services.json")
+    fetch("http://localhost:5000/services")
       .then(res => res.json())
       .then(data => {
         setServices(data);
@@ -26,7 +26,7 @@ const ServicesFull = () => {
       </div>
       <div className="mb-20 ml-20 grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-8  ">
         {services.map(service => (
-          <ServiceCard key={service.service_id} service={service}></ServiceCard>
+          <ServiceCard key={service._id} service={service}></ServiceCard>
         ))}
       </div>
     </div>
