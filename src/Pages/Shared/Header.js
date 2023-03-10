@@ -24,6 +24,12 @@ const Header = () => {
           <li className="font-semibold mr-2">
             <button onClick={handleSignOut}>Sign Out</button>
           </li>
+          <li className="font-semibold mr-2">
+            <Link to="/myreview">My Reviews</Link>
+          </li>
+          <li className="font-semibold mr-2">
+            <Link to="/addservice">Add Service</Link>
+          </li>
         </>
       ) : (
         <>
