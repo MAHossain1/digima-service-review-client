@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useLoaderData } from "react-router-dom";
-import bannerImg from "../../assests/banner/slider-4.png";
+import AddReview from "../Review/AddReview";
 import Review from "../Review/Review";
 
 const ServiceAndReview = () => {
   const service = useLoaderData();
   const { _id, title, description, img, price } = service;
   const [reviews, setReviews] = useState([]);
-  console.log(reviews.length);
+  // console.log(reviews.length);
 
   useEffect(() => {
-    fetch("http://localhost:5000/reviews")
+    fetch(`http://localhost:5000/reviews?reviewForService=${_id}`)
       .then(res => res.json())
       .then(data => setReviews(data));
-  }, []);
+  }, [_id]);
 
-  console.log(service);
+  // console.log(service);
 
   return (
     <div className="flex flex-col md:flex-row gap-4 rounded-lg">
@@ -32,23 +32,16 @@ const ServiceAndReview = () => {
           </div>
         </div>
       </div>
-      <div className="w-full md:w-2/5 bg-base-200 md:h-auto">
-        <h2 className="text-center text-3xl my-4">Customers Reviews</h2>
+      <div className="w-full md:w-2/5 bg-base-200 md:h-auto mr-2">
+        <h2 className="text-center text-success text-3xl my-4">
+          Customers Reviews for this Service: {title}
+        </h2>
         {reviews.map(review => (
           <Review key={review._id} review={review}></Review>
         ))}
+        <AddReview></AddReview>
       </div>
     </div>
-    // <div class="relative">
-    //   <img src={bannerImg} alt="Banner" class="w-full h-auto" />
-    //   <div class="absolute top-3/4 inset-0 flex justify-center items-center">
-    //     <img
-    //       src={service.img}
-    //       alt="Product "
-    //       class="w-1/2 m-3 bg-white border-spacing-2 border-slate-400  h-auto rounded-lg "
-    //     />
-    //   </div>
-    // </div>
   );
 };
 
